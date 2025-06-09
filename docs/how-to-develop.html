@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: Build a ZERTH Pay WooCommerce Plugin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: A task-oriented, multi-section single-page application. A fixed top navigation allows users to jump between logical phases of development: 'Get Started' (core concepts), 'Build the Foundation' (file structure), 'The Gateway Class' (interactive code breakdown), 'API & Webhooks' (visual flow diagram), and 'Security & Testing' (interactive checklist). This non-linear structure is chosen over a long scroll to empower users, especially non-experts, to learn at their own pace and focus on specific areas. It breaks down a complex process into manageable, understandable modules, enhancing usability and knowledge retention. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core Concepts (Plugin, Gateway, API, Webhook) -> Goal: Inform -> Viz/Presentation: Interactive Cards -> Interaction: Hover/Click to reveal info -> Justification: Quick, digestible intros to key terms -> Library/Method: HTML/CSS/JS.
+        - Report Info: Plugin File Structure -> Goal: Organize -> Viz/Presentation: Visual Diagram -> Interaction: Static visual aid -> Justification: Clearer than a text list for understanding project layout -> Library/Method: HTML/CSS.
+        - Report Info: WC_Payment_Gateway class methods -> Goal: Explain Code -> Viz/Presentation: Interactive Method List -> Interaction: Click method name to show code snippet & explanation -> Justification: Makes complex code less intimidating by presenting it in context-specific, user-triggered chunks. -> Library/Method: HTML/CSS/JS.
+        - Report Info: API/Webhook data flow -> Goal: Change/Relationships -> Viz/Presentation: Animated Diagram -> Interaction: JS-driven animation on view -> Justification: Visually demonstrates the abstract process of requests, responses, and notifications, making it easier to grasp. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Security & Testing Best Practices -> Goal: Inform/Organize -> Viz/Presentation: Interactive Checklist -> Interaction: Hover effects -> Justification: Reinforces the importance of these steps in a more engaging format than a simple list. -> Library/Method: HTML/CSS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .nav-item {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: #0284c7; /* sky-600 */
+            border-bottom-color: #0284c7; /* sky-600 */
+        }
+        .nav-item:not(.active):hover {
+            color: #0369a1; /* sky-700 */
+            border-bottom-color: #e2e8f0; /* slate-200 */
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-section.active {
+            display: block;
+        }
+        .code-block {
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .code-comment {
+            color: #64748b; /* slate-500 */
+        }
+        .concept-card, .method-item, .checklist-item {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .concept-card:hover, .method-item:hover, .checklist-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flow-diagram-box {
+            border: 2px solid #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            background-color: white;
+            position: relative;
+        }
+        .flow-arrow {
+            position: absolute;
+            color: #0284c7; /* sky-600 */
+            font-size: 1.5rem;
+            line-height: 2rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 border-b border-slate-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 text-xl font-bold text-slate-800">
+                    ZERTH Pay Plugin Guide
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a id="nav-start" class="nav-item px-3 py-2 text-sm font-medium border-b-2 border-transparent active">🚀 Get Started</a>
+                        <a id="nav-foundation" class="nav-item px-3 py-2 text-sm font-medium border-b-2 border-transparent">🏗️ Foundation</a>
+                        <a id="nav-class" class="nav-item px-3 py-2 text-sm font-medium border-b-2 border-transparent">💳 Gateway Class</a>
+                        <a id="nav-api" class="nav-item px-3 py-2 text-sm font-medium border-b-2 border-transparent">🔗 API & Webhooks</a>
+                        <a id="nav-security" class="nav-item px-3 py-2 text-sm font-medium border-b-2 border-transparent">🛡️ Security & Testing</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm">
+                        <option value="start">🚀 Get Started</option>
+                        <option value="foundation">🏗️ Foundation</option>
+                        <option value="class">💳 Gateway Class</option>
+                        <option value="api">🔗 API & Webhooks</option>
+                        <option value="security">🛡️ Security & Testing</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Get Started Section -->
+        <section id="section-start" class="content-section active">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Build a WooCommerce Payment Gateway</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">This guide transforms the technical process of creating a ZERTH Pay plugin into an interactive experience. Explore the core concepts and development phases required to integrate a secure payment solution into any WooCommerce store.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="concept-card bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-800">WordPress Plugin</h3>
+                    <p class="mt-2 text-sm text-slate-600">A self-contained package of code that extends WordPress functionality without altering core files, ensuring stability and making your site's features modular and manageable.</p>
+                </div>
+                <div class="concept-card bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-800">WooCommerce Gateway</h3>
+                    <p class="mt-2 text-sm text-slate-600">A specialized plugin that adds a new payment method to the checkout page, acting as the secure bridge between the customer, your store, and the payment processor like ZERTH Pay.</p>
+                </div>
+                <div class="concept-card bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-800">External API</h3>
+                    <p class="mt-2 text-sm text-slate-600">An Application Programming Interface provides a set of rules for communication. Your plugin will use the ZERTH Pay API to securely send requests (like "initiate payment") and receive responses.</p>
+                </div>
+                <div class="concept-card bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-slate-800">Webhooks</h3>
+                    <p class="mt-2 text-sm text-slate-600">An event-driven notification system. Instead of your site constantly asking for updates, ZERTH Pay uses webhooks to instantly "push" transaction status changes (e.g., 'payment complete') to your store.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Foundation Section -->
+        <section id="section-foundation" class="content-section">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Building the Foundation</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Every stable plugin starts with a solid structure. This section covers the essential file setup and the plugin header that WordPress uses to recognize and manage your code.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">1. Plugin Folder & File Structure</h3>
+                    <p class="text-slate-600 mb-4">A well-organized folder structure is key for maintainability. Your plugin lives in `wp-content/plugins/` with a unique folder name.</p>
+                    <div class="code-block text-sm">
+                        <span class="code-comment">/wp-content/plugins/</span><br>
+                        └── <span class="text-sky-400">zerth-pay-gateway/</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="text-yellow-400">assets/</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp; ├── css/<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp; ├── js/<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp; └── images/<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="text-yellow-400">includes/</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp; └── <span class="text-green-400">class-wc-gateway-zerth.php</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="text-yellow-400">languages/</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="text-green-400">zerth-pay-gateway.php</span> <span class="code-comment">(Main file)</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">2. The Essential Plugin Header</h3>
+                    <p class="text-slate-600 mb-4">This commented block at the top of your main PHP file is mandatory. It tells WordPress everything it needs to know about your plugin.</p>
+                    <div class="code-block text-xs">
+                        &lt;?php<br>
+                        <span class="code-comment">/**<br>
+                         * Plugin Name: ZERTH Pay WooCommerce Gateway<br>
+                         * Description: A WooCommerce payment gateway for ZERTH Pay.<br>
+                         * Version:     1.0.0<br>
+                         * Author:      Your Name<br>
+                         * WC requires at least: 3.0<br>
+                         * WC tested up to: 8.9<br>
+                         */</span><br><br>
+                        <span class="code-comment">// Security Check: Exit if accessed directly</span><br>
+                        if (! defined( 'ABSPATH' ) ) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;exit;<br>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gateway Class Section -->
+        <section id="section-class" class="content-section">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">The Gateway Class</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">The heart of your plugin is a PHP class that extends WooCommerce's `WC_Payment_Gateway`. This provides all the core logic. Click on each method below to see its code and purpose.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Key Methods of `WC_Gateway_Zerth_Pay`</h3>
+                    <div class="space-y-3">
+                        <div id="method-btn-construct" class="method-item bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                            <h4 class="font-semibold text-slate-800">__construct()</h4>
+                            <p class="text-sm text-slate-500">Initializes the gateway and sets its core properties.</p>
+                        </div>
+                        <div id="method-btn-fields" class="method-item bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                            <h4 class="font-semibold text-slate-800">init_form_fields()</h4>
+                            <p class="text-sm text-slate-500">Defines the settings fields for the admin area.</p>
+                        </div>
+                        <div id="method-btn-payment" class="method-item bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                            <h4 class="font-semibold text-slate-800">process_payment()</h4>
+                            <p class="text-sm text-slate-500">Handles the actual transaction when a customer checks out.</p>
+                        </div>
+                         <div id="method-btn-register" class="method-item bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer">
+                            <h4 class="font-semibold text-slate-800">Registering the Gateway</h4>
+                            <p class="text-sm text-slate-500">Tells WooCommerce that your new gateway exists.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <div id="method-display">
+                        <!-- Content will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- API & Webhooks Section -->
+        <section id="section-api" class="content-section">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">API & Webhook Flow</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">This section visualizes the two critical communication channels: the API call your plugin makes to initiate a payment, and the webhook ZERTH Pay sends back to confirm it.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Payment Initiation (API Request)</h3>
+                    <p class="text-slate-600 mb-6">When a user clicks "Place Order", your `process_payment` function sends a secure request to ZERTH Pay.</p>
+                     <div class="relative space-y-4">
+                        <div class="flow-diagram-box">🛒 WooCommerce Store</div>
+                        <div class="flow-arrow" style="top: 2.5rem; left: 50%; transform: translateX(-50%) rotate(90deg); animation-delay: 0s;">→</div>
+                        <div class="flow-diagram-box">🔌 Your Plugin (`process_payment`)</div>
+                         <div class="flow-arrow" style="top: 7.5rem; left: 50%; transform: translateX(-50%) rotate(90deg); animation-delay: 0.5s;">→</div>
+                        <div class="flow-diagram-box bg-sky-100 border-sky-300">💰 ZERTH Pay API</div>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Payment Confirmation (Webhook)</h3>
+                    <p class="text-slate-600 mb-6">After the payment is complete, ZERTH Pay sends an automated notification (a webhook) back to a dedicated listener URL on your site.</p>
+                     <div class="relative space-y-4">
+                        <div class="flow-diagram-box bg-sky-100 border-sky-300">💰 ZERTH Pay API</div>
+                        <div class="flow-arrow" style="top: 2.5rem; left: 50%; transform: translateX(-50%) rotate(90deg); animation-delay: 1s;">→</div>
+                        <div class="flow-diagram-box">👂 Webhook Listener (Your Site)</div>
+                        <div class="flow-arrow" style="top: 7.5rem; left: 50%; transform: translateX(-50%) rotate(90deg); animation-delay: 1.5s;">→</div>
+                        <div class="flow-diagram-box">📦 Updates WooCommerce Order</div>
+                    </div>
+                </div>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 mt-8">
+                <h3 class="text-xl font-semibold text-slate-800 mb-4">Making the API call with `wp_remote_post()`</h3>
+                <p class="text-slate-600 mb-4">WordPress provides a secure function, `wp_remote_post()`, to handle these external communications. Here’s a simplified look at how you'd use it to send data to ZERTH Pay.</p>
+                <div class="code-block text-sm">
+                    $api_url = 'https://api.zerthpay.com/payments/initiate';<br>
+                    $payload = [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'amount'   => $order->get_total(),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'order_id' => $order_id,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// ... other order data</span><br>
+                    ];<br><br>
+                    $response = wp_remote_post($api_url, [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'method'    => 'POST',<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'headers'   => ['Authorization' => 'Bearer ' . $api_key],<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'body'      => wp_json_encode($payload),<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'sslverify' => true,<br>
+                    ]);<br><br>
+                    <span class="code-comment">// Then, process the $response...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security & Testing Section -->
+        <section id="section-security" class="content-section">
+             <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Security & Testing</h1>
+                <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">For a payment gateway, security isn't optional, and thorough testing is mandatory. Review these critical best practices to ensure your plugin is robust, secure, and reliable.</p>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">🛡️ Security Checklist</h3>
+                    <div class="space-y-4">
+                        <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">🔑</span>
+                            <div>
+                                <h4 class="font-semibold">Secure API Keys</h4>
+                                <p class="text-sm text-slate-600">Never hardcode API keys. Store them in the database via the settings page and retrieve them with `get_option()`.</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">🔒</span>
+                            <div>
+                                <h4 class="font-semibold">Use HTTPS Everywhere</h4>
+                                <p class="text-sm text-slate-600">Ensure the entire site, especially checkout and webhook URLs, uses SSL/HTTPS to encrypt all data in transit.</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">✍️</span>
+                            <div>
+                                <h4 class="font-semibold">Validate & Sanitize Input</h4>
+                                <p class="text-sm text-slate-600">Clean all data coming from users or external services before using or saving it to prevent attacks.</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">🔐</span>
+                            <div>
+                                <h4 class="font-semibold">Verify Webhook Authenticity</h4>
+                                <p class="text-sm text-slate-600">Use a shared secret key and HMAC signatures to confirm that webhook notifications genuinely come from ZERTH Pay.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                     <h3 class="text-2xl font-bold text-slate-800 mb-4">🧪 Testing Protocol</h3>
+                     <div class="space-y-4">
+                         <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">🏠</span>
+                            <div>
+                                <h4 class="font-semibold">Develop Locally</h4>
+                                <p class="text-sm text-slate-600">Always code and test on a local or staging server, never on a live site, to avoid breaking your store.</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">⚙️</span>
+                            <div>
+                                <h4 class="font-semibold">Test All Scenarios</h4>
+                                <p class="text-sm text-slate-600">Run test transactions for successes, failures, and refunds. Check that order statuses and stock levels update correctly.</p>
+                            </div>
+                        </div>
+                         <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">🐞</span>
+                            <div>
+                                <h4 class="font-semibold">Use Debugging Tools</h4>
+                                <p class="text-sm text-slate-600">Enable `WP_DEBUG` and `WP_DEBUG_LOG` on your test site to catch errors, especially for background processes like webhooks.</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item flex items-start bg-white p-4 rounded-lg shadow-sm border border-slate-200">
+                            <span class="text-sky-600 text-2xl mr-4">💥</span>
+                            <div>
+                                <h4 class="font-semibold">Check for Conflicts</h4>
+                                <p class="text-sm text-slate-600">Test your plugin with other common plugins (caching, security) and different themes to ensure compatibility.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navItems = document.querySelectorAll('.nav-item');
+            const mobileNav = document.getElementById('mobile-nav');
+            const sections = document.querySelectorAll('.content-section');
+
+            const methodButtons = {
+                construct: document.getElementById('method-btn-construct'),
+                fields: document.getElementById('method-btn-fields'),
+                payment: document.getElementById('method-btn-payment'),
+                register: document.getElementById('method-btn-register'),
+            };
+            const methodDisplay = document.getElementById('method-display');
+
+            const methodContent = {
+                construct: {
+                    title: '__construct() - The Initializer',
+                    description: 'This is the constructor of your class. Its main job is to set up the gateway\'s identity (like its ID and title) and to load its settings from the WooCommerce admin area.',
+                    code: `public function __construct() {
+    $this->id                 = 'zerth_pay';
+    $this->icon               = plugins_url('icon.png', __FILE__);
+    $this->has_fields         = false;
+    $this->method_title       = 'ZERTH Pay Gateway';
+    $this->method_description = 'Accept payments via ZERTH Pay.';
+
+    <span class="code-comment">// Load the settings.</span>
+    $this->init_form_fields();
+    $this->init_settings();
+
+    <span class="code-comment">// Define user-facing properties.</span>
+    $this->title       = $this->get_option('title');
+    $this->description = $this->get_option('description');
+
+    <span class="code-comment">// Hook to save settings</span>
+    add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
+}`
+                },
+                fields: {
+                    title: 'init_form_fields() - Admin Settings',
+                    description: 'This method defines the configuration form that the store owner will see in the WordPress admin. This is where they will enter their API keys, enable test mode, etc.',
+                    code: `public function init_form_fields() {
+    $this->form_fields = [
+        'enabled' => [
+            'title'   => 'Enable/Disable',
+            'type'    => 'checkbox',
+            'label'   => 'Enable ZERTH Pay',
+            'default' => 'yes'
+        ],
+        'title' => [
+            'title'   => 'Title',
+            'type'    => 'text',
+            'default' => 'ZERTH Pay'
+        ],
+        'api_key' => [
+            'title'   => 'ZERTH Pay API Key',
+            'type'    => 'password', <span class="code-comment">// Use password type for security</span>
+        ],
+        'secret_key' => [
+            'title'   => 'ZERTH Pay Secret Key',
+            'type'    => 'password',
+        ],
+        'webhook_secret' => [
+            'title'   => 'Webhook Secret',
+            'type'    => 'password',
+        ],
+    ];
+}`
+                },
+                payment: {
+                    title: 'process_payment() - The Core Logic',
+                    description: 'This method is triggered when the customer clicks "Place Order". It gathers order data, sends it to the ZERTH Pay API, and handles the response, typically by redirecting the customer to a secure payment page.',
+                    code: `public function process_payment($order_id) {
+    $order = wc_get_order($order_id);
+
+    <span class="code-comment">// 1. Prepare data for the API request.</span>
+    $payload = $this->prepare_request_data($order);
+    
+    <span class="code-comment">// 2. Call the ZERTH Pay API.</span>
+    $response = $this->call_zerth_pay_api('payments/initiate', $payload);
+
+    if ($response && $response['status'] === 'success') {
+        <span class="code-comment">// 3. On success, redirect to ZERTH Pay's payment page.</span>
+        return [
+            'result'   => 'success',
+            'redirect' => $response['redirect_url']
+        ];
+    } else {
+        <span class="code-comment">// 4. On failure, show an error message.</span>
+        wc_add_notice('Payment failed. Please try again.', 'error');
+        return ['result' => 'failure'];
+    }
+}`
+                },
+                register: {
+                    title: 'Registering Your Gateway',
+                    description: 'After the class is defined, you must "hook" it into WooCommerce using a filter. This makes it appear as a valid payment option in the settings.',
+                    code: `
+<span class="code-comment">// Hook into WooCommerce to add the new gateway</span>
+add_filter('woocommerce_payment_gateways', 'add_zerth_pay_gateway_class');
+
+function add_zerth_pay_gateway_class($gateways) {
+    $gateways[] = 'WC_Gateway_Zerth_Pay'; <span class="code-comment">// Add your class name here</span>
+    return $gateways;
+}
+
+<span class="code-comment">// Initialize the gateway class once plugins are loaded</span>
+add_action('plugins_loaded', 'init_zerth_pay_gateway_class');
+
+function init_zerth_pay_gateway_class() {
+    if (class_exists('WC_Payment_Gateway')) {
+        require_once 'includes/class-wc-gateway-zerth.php';
+    }
+}
+`
+                }
+            };
+
+            function showMethodContent(key) {
+                if (!methodContent[key]) return;
+                const content = methodContent[key];
+                methodDisplay.innerHTML = `
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">${content.title}</h3>
+                    <p class="text-slate-600 mb-6">${content.description}</p>
+                    <div class="code-block">${content.code}</div>
+                `;
+                
+                Object.values(methodButtons).forEach(btn => {
+                    btn.classList.remove('bg-sky-100', 'border-sky-500');
+                    btn.classList.add('bg-white', 'border-slate-200');
+                });
+
+                methodButtons[key].classList.add('bg-sky-100', 'border-sky-500');
+                methodButtons[key].classList.remove('bg-white', 'border-slate-200');
+            }
+
+            function switchSection(targetId) {
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById('section-' + targetId).classList.add('active');
+
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.getElementById('nav-' + targetId).classList.add('active');
+                
+                if(mobileNav.value !== targetId){
+                   mobileNav.value = targetId;
+                }
+            }
+
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const targetId = e.target.id.split('-')[1];
+                    switchSection(targetId);
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                 switchSection(e.target.value);
+            });
+
+            Object.keys(methodButtons).forEach(key => {
+                methodButtons[key].addEventListener('click', () => showMethodContent(key));
+            });
+
+            // Initial setup
+            switchSection('start');
+            showMethodContent('construct');
+        });
+    </script>
+</body>
+</html>
