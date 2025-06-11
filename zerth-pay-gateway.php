@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: ZERTH Pay WooCommerce Gateway
- * Plugin URI:  https://yourwebsite.com/zerth-pay-gateway
+ * Plugin URI:  https://pay.zerth.online
  * Description: A WooCommerce payment gateway for ZERTH Pay.
  * Version:     1.0.0
  * Author:      James Idowu (James KPIE)
- * Author URI:  https://pay.zerth.online
+ * Author URI:  https://sharpali.com
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: zerth-pay-gateway
