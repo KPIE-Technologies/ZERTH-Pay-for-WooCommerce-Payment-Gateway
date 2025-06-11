@@ -55,7 +55,8 @@ function zerth_pay_gateway_init_class() {
         return; // WooCommerce not active
     }
     // Include the gateway class file
-    require_once plugin_dir_path( __FILE__ ). 'includes/class-wc-gateway-zerth-pay.php';
+    // require_once plugin_dir_path( __FILE__ ). 'includes/class-wc-gateway-zerth-pay.php';
+    require_once plugin_dir_path( __FILE__ ). 'includes/class-wc-gateway-zerth.php';
 
     // Add the gateway to WooCommerce
     add_filter( 'woocommerce_payment_gateways', 'add_zerth_pay_gateway_class' );

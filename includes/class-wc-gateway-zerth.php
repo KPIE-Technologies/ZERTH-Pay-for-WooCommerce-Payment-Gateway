@@ -153,8 +153,7 @@ private function prepare_zerth_pay_request_data($order) {
 // Here is where we make API call to ZERTH Pay's External API
 // Inside WC_Gateway_Zerth_Pay class (or a private helper method)
 private function call_zerth_pay_api($endpoint, $payload) {
-    $api_key    = $this->get_option('api_key');
-    $secret_key = $this->get_option('secret_key');
+    $client_id = $this->get_option('client_id');
     $test_mode  = $this->get_option('test_mode') === 'yes';
 
     $initiate_url = $test_mode? 'https://pay.zerth.online/pay/sandbox/api/v1/authentication/token' : 'https://pay.zerth.online/pay/api/v1/authentication/token';
@@ -170,6 +169,7 @@ private function call_zerth_pay_api($endpoint, $payload) {
         'Content-Type'  => 'application/json',
         // 'Authorization' => 'Bearer '. $api_key, // Or whatever ZERTH Pay uses (e.g., Basic Auth, custom header)
         'Authorization' => 'Bearer '. $access_token, // ZERTH Pay uses Bearer token gotten from the exchange API Key for token endpoint
+        'X-Client-Id' =>  $client_id, 
         // A signature might need to be generated using the secret_key here, depending on ZERTH Pay's requirements.
    );
 
