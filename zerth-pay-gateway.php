@@ -31,10 +31,10 @@ function zerth_pay_activate() {
         'enabled' => 'no',
         'title'   => 'ZERTH Pay',
         'description' => 'Pay securely with ZERTH Pay. Pay in Naira or Crypto.',
-        'api_key' => '',
-        'secret_key' => '',
-        'bearer_token' => '',
+        'client_id' => '',
+        'client_secret' => '',
         'test_mode' => 'yes',
+        'webhook_secret' => '',
     ) );
 }
 
@@ -46,41 +46,6 @@ function zerth_pay_deactivate() {
     // delete_option( 'zerth_pay_gateway_temp_data' );
 }
 
-<?php
-if (! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly
-}
-
-class WC_Gateway_Zerth_Pay extends WC_Payment_Gateway {
-
-    public function __construct() {
-        $this->id                 = 'zerth_pay';
-        $this->icon               = plugins_url( 'assets/images/zerth-pay-icon.png', dirname( __FILE__ ) ); // Path to your icon
-        $this->has_fields         = false; // Set to true if you need custom fields on checkout
-        $this->method_title       = __( 'ZERTH Pay Gateway', 'zerth-pay-gateway' );
-        $this->method_description = __( 'Accept payments securely via ZERTH Pay.', 'zerth-pay-gateway' );
-
-        // Define supported features
-        $this->supports = array(
-            'products',
-            'refunds', // If ZERTH Pay API supports refunds
-            'pre-orders', // If applicable
-        );
-
-        // Load the settings API
-        $this->init_form_fields();
-        $this->init_settings();
-
-        // Get settings
-        $this->title       = $this->get_option( 'title' );
-        $this->description = $this->get_option( 'description' );
-        $this->enabled     = $this->get_option( 'enabled' );
-
-        // Hooks
-        add_action( 'woocommerce_update_options_payment_gateways_'. $this->id, array( $this, 'process_admin_options' ) );
-        // Additional hooks can be added here for frontend display or validation.
-    }
-}
 
 // Ensure WooCommerce is active and our gateway class is loaded
 add_action( 'plugins_loaded', 'zerth_pay_gateway_init_class' );
@@ -97,6 +62,6 @@ function zerth_pay_gateway_init_class() {
 }
 
 function add_zerth_pay_gateway_class( $methods ) {
-    $methods = 'WC_Gateway_Zerth_Pay'; // Add your class name here
+    $methods[] = 'WC_Gateway_Zerth_Pay'; // Add your class name here
     return $methods;
 }
