@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ZERTH Pay WooCommerce Gateway
  * Plugin URI:  https://pay.zerth.online
- * Description: A WooCommerce payment gateway for ZERTH Pay.
+ * Description: ZERTH Pay for WooCommerce allows store owners in Nigeria to accept secure payments via Bank transfer witthin Nigeria banks and cryptocurrency payment channels.
  * Version:     1.0.0
  * Author:      James Idowu (James KPIE)
  * Author URI:  https://sharpali.com
