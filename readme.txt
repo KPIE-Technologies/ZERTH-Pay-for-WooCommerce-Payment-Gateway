@@ -1,23 +1,20 @@
-=== ZERTH Pay for WooCommerce Payment Gateway ===
-Plugin Name: ZERTH Pay for WooCommerce Gateway
-Plugin URI:  hhttps://pay.zerth.online
-Description: A WooCommerce payment gateway for ZERTH Pay.
-Version:     1.0.0
-Author:      James Idowu (James KPIE)
-Author URI:  https://sharpali.com
-License:     GPL-2.0+
-License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Text Domain: zerth-pay-gateway
-Domain Path: /languages
-WC requires at least: 3.0
-WC tested up to: 8.9
+=== ZERTH Pay Payment Gateway ===
+Contributors: jameskpie
+Donate link: https://sharpali.com/contact
+Tags: zerth, zerth pay, jameskpie, bill payment, banking as a service, mobile payment, mobile money, woocommerce, payment gateway, kpie plugins, verve, crypto, nowpayments, nigeria, naira, usd, bitcoin, mastercard, visa, cryptocurrency
+Requires at least: 6.2
+Tested up to: 6.8
+Stable tag: 1.0.0
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
- ZERTH Pay for WooCommerce allows your store in Nigeria to accept secure payments via Bank transfer witthin Nigeria banks and cryptocurrency payment channels.
+ ZERTH Pay WooCommerce Addon plugin allows your store in Nigeria to accept secure payments via Bank transfer witthin Nigeria banks and cryptocurrency payment channels.
 
 == Description ==
 
-With ZERTH Pay, Merchants can allow customer pay at Woocommerce check using Naira, USD and cryptocurrency and the Merchant get his payment remitted in Naira or cryptocurrency. Even if you customers pay with Crypto, you as a merchant may withdraw as local currency.
+With ZERTH Pay, Merchants can allow customers pay at Woocommerce checkout using Naira, USD and cryptocurrency and the Merchant get his payment remitted in Naira or cryptocurrency. Even if you customers pay with Crypto, you as a merchant may withdraw as local currency.
 
 With ZERTH Pay for WooCommerce, you can accept payments via:
 
