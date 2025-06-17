@@ -1,9 +1,9 @@
 <?php 
 
 /**
- * Plugin Name: ZERTH Pay  Gateway
+ * Plugin Name: ZERTH Pay Payment Gateway
  * Plugin URI:  https://pay.zerth.online
- * Description: A WooCommerce payment gateway for ZERTH Pay.
+ * Description: A WooCommerce payment gateway for ZERTH Pay. Pay for Products with Naira, USD, and Crypto.
  * Version:     1.0.0
  * Author:      James Idowu (James KPIE)
  * Author URI:  https://sharpali.com
