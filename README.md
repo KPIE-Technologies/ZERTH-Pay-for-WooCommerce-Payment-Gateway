@@ -13,16 +13,16 @@ WC requires at least: 3.0
 WC tested up to: 8.9
 
 
- ZERTH Pay WooCommerce Addon allows your store in Nigeria to accept secure payments via Bank transfer witthin Nigeria banks and cryptocurrency payment channels.
+ ZERTH Pay WooCommerce Addon allows your store in Nigeria to accept secure payments via Bank transfer within Nigerian banks and cryptocurrency payment channels.
 
 ## Description
 
-With ZERTH Pay, Merchants can allow customer pay at Woocommerce check using Naira, USD and cryptocurrency and the Merchant get his payment remitted in Naira or cryptocurrency. Even if you customers pay with Crypto, you as a merchant may withdraw as local currency.
+With ZERTH Pay, Merchants can allow customers to pay at WooCommerce checkout using Naira, USD, and cryptocurrency, and the Merchant gets their payment remitted in Naira or cryptocurrency. Even if your customers pay with Crypto, you as a merchant may withdraw in local currency.
 
 With ZERTH Pay for WooCommerce, you can accept payments via:
 
 * Local Bank Transfer at Checkout
-* Cryptocurrencies in (USDT, BTC, DOGE, LTC etc)
+* Cryptocurrencies in (USDT, BTC, DOGE, LTC, etc)
 * Many more coming soon
 
 = Why ZERTH Pay? =
@@ -39,7 +39,7 @@ With ZERTH Pay for WooCommerce, you can accept payments via:
 
 ## Note =
 
-This plugin is meant to be used by merchants Nigeria or could recieve payout with a Nigerian Bank.
+This plugin is meant to be used by merchants in Nigeria or could receive payout with a Nigerian Bank.
 
 
 ## Installation ==
