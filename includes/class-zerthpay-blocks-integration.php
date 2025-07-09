@@ -28,7 +28,7 @@ final class Zerthpay_Blocks_Integration extends AbstractPaymentMethodType {
 	protected $name = 'zerthpay'; // This must match the ID in WC_Gateway_Zerthpay.
 
 	/**
-	 * The main Zerthpay gateway instance.
+	 * The main ZERTH Pay Payment Gateway instance.
 	 *
 	 * @var \WC_Gateway_Zerthpay
 	 */
