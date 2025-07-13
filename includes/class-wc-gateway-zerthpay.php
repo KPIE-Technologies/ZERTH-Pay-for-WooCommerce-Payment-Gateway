@@ -245,7 +245,6 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 	}
 
 	private function prepare_zerthpay_request_data($order) {
-        error_log(sprintf('Order ID: %s', $order->get_id())); 
 		
         return array(
             'amount'      => $order->get_total(),
@@ -267,7 +266,6 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
         $token = $this->initialize_zerthpay(initiate_url: $initiate_url);
 
         if ( !isset($token['res']['data']['access_token']) ) {
-            error_log('ZERTH Pay API Error: Failed to obtain access token.');
             wc_add_notice(__('ZERTH Pay API Error: Could not authenticate with payment gateway.', 'zerthpay-gateway'), 'error');
             return false;
         }
@@ -296,7 +294,6 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 
         if (is_wp_error($response)) {
             $error_message = $response->get_error_message();
-            error_log(sprintf('ZERTH Pay API Error: %s', $error_message));
             return false;
         }
 
@@ -305,7 +302,6 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 
         $http_code = wp_remote_retrieve_response_code($response);
         if ($http_code !== 200) {
-            error_log(sprintf('ZERTH Pay API responded with status %d: %s', $http_code, (isset($data['message']) ? json_encode($data['message']) : 'No specific message')));
             return $data; 
         }
 
@@ -313,43 +309,44 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
     }
 
 	public function initialize_zerthpay($initiate_url){
-        $headers = array(
-            'Content-Type'  => 'application/x-www-form-urlencoded',
-       );
-            $payload = [
-                'client_id' => $this->api_key,
-                'secret_id' => $this->api_secret
-            ];
-            $body = json_encode($payload);
-
-            $curl = curl_init();
-
-      curl_setopt_array($curl, [
-        CURLOPT_URL => $initiate_url,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => $body,
-        CURLOPT_HTTPHEADER => [
-          "accept: application/json",
-          "content-type: application/json"
-        ],
-      ]);
-
-      $response = curl_exec($curl);
-      $err = curl_error($curl);
-
-      curl_close($curl);
-
-       if ($err) {
-        error_log("cURL Error #: " . $err); 
-        return ['status'=> 'failed', 'res'=> "cURL Error #:" . $err];
-      } else {
-        return ['status'=> 'success', 'res'=>json_decode($response, true)];
-      }
+		$payload = [
+			'client_id' => $this->api_key,
+			'secret_id' => $this->api_secret
+		];
+	
+		$body = json_encode($payload);
+	
+		$headers = [
+			'Content-Type' => 'application/json',
+			'Accept'       => 'application/json',
+		];
+	
+		$args = [
+			'body'    => $body,
+			'headers' => $headers,
+			'timeout' => 30, 
+		];
+	
+		$response = wp_remote_post($initiate_url, $args);
+	
+		if (is_wp_error($response)) {
+			$error_message = $response->get_error_message();
+			return ['status' => 'failed', 'res' => "WordPress HTTP Error: " . $error_message];
+		} 
+		
+		$http_code = wp_remote_retrieve_response_code($response);
+		
+		$response_body = wp_remote_retrieve_body($response);
+	
+		$data = json_decode($response_body, true);
+	
+		if ($http_code >= 200 && $http_code < 300) {
+			return ['status' => 'success', 'res' => $data];
+		} else {
+			// Request was successful, but the API returned a non-success status code (e.g., 400, 500).
+			// Log the error and return the response data if available.
+			return ['status' => 'failed', 'res' => $data, 'http_code' => $http_code];
+		}
     }
 
 
@@ -359,7 +356,6 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 		$data 	= json_decode($body, true);
 
         if ( !isset($data['iv']) || !isset($data['payload']) ) {
-            error_log('ZERTH Pay Webhook: Missing IV or payload in encrypted data.');
             return new WP_REST_Response(array('status' => 'error', 'message' => 'Invalid encrypted payload structure'), 400);
         }
 
@@ -367,14 +363,12 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 		$encrypted_data 	= base64_decode($data['payload']);
 
 		if (empty($data) ||! is_array($data)) {
-			error_log('ZERTH Pay Webhook: Received empty or malformed payload.');
 			return new WP_REST_Response(array('status' => 'error', 'message' => 'Invalid payload'), 400);
 		}
 
         $webhook_key = $this->get_option('webhook_secret');
 
         if (empty($webhook_key)) {
-            error_log('ZERTH Pay Webhook: Webhook Secret Key is not configured in plugin settings.');
             return new WP_REST_Response(array('status' => 'error', 'message' => 'Webhook secret key not configured'), 401);
         }
 
@@ -387,25 +381,21 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 		);
 
 		if ($decrypted === false) {
-			error_log('ZERTH Pay Webhook: Decryption failed.'); 
 			return new WP_REST_Response(array('status' => 'error', 'message' => 'Decryption failed'), 400); 
 		}
 
 		$payData = json_decode($decrypted, true);
 		if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('ZERTH Pay Webhook: Invalid JSON payload after decryption: ' . json_last_error_msg()); 
 			return new WP_REST_Response(array('status' => 'error', 'message' => 'Invalid JSON payload after decryption'), 400); 
 		}
 		
 		$transaction_id= isset($payData['data']['transaction_id']) ? sanitize_text_field($payData['data']['transaction_id']) : '';
 
         if (empty($transaction_id)) {
-            error_log('ZERTH Pay Webhook: Missing transaction ID in decrypted payload.');
             return new WP_REST_Response(array('status' => 'error', 'message' => 'Missing Transaction ID'), 400);
         }
 
 		if (get_transient('zerthpay_webhook_processed_'. $transaction_id)) {
-			error_log('ZERTH Pay Webhook: Duplicate transaction ID received: '. $transaction_id);
 			return new WP_REST_Response(array('status' => 'success', 'message' => 'Already processed'), 200);
 		}
 		set_transient('zerthpay_webhook_processed_'. $transaction_id, true, DAY_IN_SECONDS); // Store for a day to prevent replay attacks
@@ -416,13 +406,11 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 		$zerthpay_transaction_id = isset($payData['data']['transaction_id'])? sanitize_text_field($payData['data']['transaction_id']) : ''; 
 
 		if (! $order_id) {
-			error_log('ZERTH Pay Webhook: Missing WooCommerce Order ID in payload.');
 			return new WP_REST_Response(array('status' => 'error', 'message' => 'Missing Order ID'), 400);
 		}
 
 		$order = wc_get_order($order_id);
 		if (! $order) {
-			error_log('ZERTH Pay Webhook: Order not found for ID '. $order_id);
 			return new WP_REST_Response(array('status' => 'error', 'message' => 'Order not found'), 404);
 		}
 
@@ -430,18 +418,18 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 			case 'Completed': 
 				if (! $order->is_paid()) {
 					$order->payment_complete($zerthpay_transaction_id); 
-					$order->add_order_note(sprintf(__('ZERTH Pay webhook: Payment completed. Transaction ID: %s', 'zerthpay-gateway'), $zerthpay_transaction_id));
+					$order->add_order_note(sprintf(__('ZERTH Pay webhook: Payment completed. Transaction ID: %1s', 'zerthpay-gateway'), $zerthpay_transaction_id));
 				}
 				break;
 			case 'Failed': 
-				$order->update_status('failed', sprintf(__('ZERTH Pay webhook: Payment failed. Transaction ID: %s', 'zerthpay-gateway'), $zerthpay_transaction_id));
+				$order->update_status('failed', sprintf(__('ZERTH Pay webhook: Payment failed. Transaction ID: %1s', 'zerthpay-gateway'), $zerthpay_transaction_id));
 				break;
 			case 'Refunded': 
-				$order->update_status('refunded', sprintf(__('ZERTH Pay webhook: Payment refunded. Transaction ID: %s', 'zerthpay-gateway'), $zerthpay_transaction_id));
+				$order->update_status('refunded', sprintf(__('ZERTH Pay webhook: Payment refunded. Transaction ID: %1s', 'zerthpay-gateway'), $zerthpay_transaction_id));
 				// Additional logic might be required here for partial refunds or stock management.
 				break;
 			default:
-				$order->add_order_note(sprintf(__('ZERTH Pay webhook: Unknown status "%s" received for transaction ID: %s', 'zerthpay-gateway'), $zerthpay_status, $zerthpay_transaction_id));
+				$order->add_order_note(sprintf(__('ZERTH Pay webhook: Unknown status "%1s" received for transaction ID: %2s', 'zerthpay-gateway'), $zerthpay_status, $zerthpay_transaction_id));
 				break;
 		}
 
