@@ -33,7 +33,7 @@ jQuery(function ($) {
 
       // For this example, we'll just log a message.
       console.log(
-        "Zerthpay gateway selected. Preparing to submit order (traditional checkout)..."
+        "ZERTH Pay Payment Gateway selected. Preparing to submit order (traditional checkout)..."
       );
 
       // Return true to allow form submission, or false to stop it.

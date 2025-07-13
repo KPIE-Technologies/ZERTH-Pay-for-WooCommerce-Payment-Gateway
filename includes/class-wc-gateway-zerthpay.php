@@ -1,6 +1,6 @@
 <?php
 /**
- * Zerthpay Gateway.
+ * ZERTH Pay Payment Gateway.
  *
  * @package Zerthpay
  */
@@ -27,8 +27,8 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 		$this->id                 = 'zerthpay';
 		$this->icon               = ZERTHPAY_PLUGIN_URL . 'assets/images/logo.png';
 		$this->has_fields         = false;
-		$this->method_title       = __( 'Zerthpay', 'zerthpay-gateway' );
-		$this->method_description = __( 'Accept payments via Zerthpay.', 'zerthpay-gateway' );
+		$this->method_title       = __( 'Zerthpay', 'zerth-pay-payment-gateway' );
+		$this->method_description = __( 'Accept payments via Zerthpay.', 'zerth-pay-payment-gateway' );
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -66,64 +66,64 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 	public function init_form_fields() {
 		$this->form_fields = array(
 			'enabled'    => array(
-				'title'   => __( 'Enable/Disable', 'zerthpay-gateway' ),
+				'title'   => __( 'Enable/Disable', 'zerth-pay-payment-gateway' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable Zerthpay Gateway', 'zerthpay-gateway' ),
+				'label'   => __( 'Enable ZERTH Pay Payment Gateway', 'zerth-pay-payment-gateway' ),
 				'default' => 'no',
 			),
 			'title'      => array(
-				'title'       => __( 'Title', 'zerthpay-gateway' ),
+				'title'       => __( 'Title', 'zerth-pay-payment-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'zerthpay-gateway' ),
-				'default'     => __( 'Pay with Zerthpay', 'zerthpay-gateway' ),
+				'description' => __( 'This controls the title which the user sees during checkout.', 'zerth-pay-payment-gateway' ),
+				'default'     => __( 'Pay with Zerthpay', 'zerth-pay-payment-gateway' ),
 				'desc_tip'    => true,
 			),
 			'description' => array(
-				'title'       => __( 'Description', 'zerthpay-gateway' ),
+				'title'       => __( 'Description', 'zerth-pay-payment-gateway' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'zerthpay-gateway' ),
-				'default'     => __( 'Pay using secured Zerthpay channel.', 'zerthpay-gateway' ),
+				'description' => __( 'This controls the description which the user sees during checkout.', 'zerth-pay-payment-gateway' ),
+				'default'     => __( 'Pay using secured Zerthpay channel.', 'zerth-pay-payment-gateway' ),
 				'desc_tip'    => true,
 			),
 			'testmode'   => array(
-				'title'       => __( 'Test mode', 'zerthpay-gateway' ),
+				'title'       => __( 'Test mode', 'zerth-pay-payment-gateway' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Enable Test Mode', 'zerthpay-gateway' ),
+				'label'       => __( 'Enable Test Mode', 'zerth-pay-payment-gateway' ),
 				'default'     => 'no',
-				'description' => __( 'Place the gateway in test mode using test API keys.', 'zerthpay-gateway' ),
+				'description' => __( 'Place the gateway in test mode using test API keys.', 'zerth-pay-payment-gateway' ),
 			),
 			'live_api_key' => array(
-				'title'       => __( 'Live Client ID', 'zerthpay-gateway' ),
+				'title'       => __( 'Live Client ID', 'zerth-pay-payment-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'Get your Live Client ID from your Zerthpay dashboard.', 'zerthpay-gateway' ),
+				'description' => __( 'Get your Live Client ID from your Zerthpay dashboard.', 'zerth-pay-payment-gateway' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			),
 			'live_api_secret' => array(
-				'title'       => __( 'Live Client Secret', 'zerthpay-gateway' ),
+				'title'       => __( 'Live Client Secret', 'zerth-pay-payment-gateway' ),
 				'type'        => 'password',
-				'description' => __( 'Get your Live Client Secret from your Zerthpay dashboard.', 'zerthpay-gateway' ),
+				'description' => __( 'Get your Live Client Secret from your Zerthpay dashboard.', 'zerth-pay-payment-gateway' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			),
 			'test_api_key' => array(
-				'title'       => __( 'Test Client ID', 'zerthpay-gateway' ),
+				'title'       => __( 'Test Client ID', 'zerth-pay-payment-gateway' ),
 				'type'        => 'text',
-				'description' => __( 'Get your Test Client ID from your Zerthpay dashboard.', 'zerthpay-gateway' ),
+				'description' => __( 'Get your Test Client ID from your Zerthpay dashboard.', 'zerth-pay-payment-gateway' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			),
 			'test_api_secret' => array(
-				'title'       => __( 'Test Client Secret', 'zerthpay-gateway' ),
+				'title'       => __( 'Test Client Secret', 'zerth-pay-payment-gateway' ),
 				'type'        => 'password',
-				'description' => __( 'Get your Test Client Secret from your Zerthpay dashboard.', 'zerthpay-gateway' ),
+				'description' => __( 'Get your Test Client Secret from your Zerthpay dashboard.', 'zerth-pay-payment-gateway' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			),
             'webhook_secret' => array(
-                'title'       => __( 'Webhook Secret Key', 'zerthpay-gateway' ),
+                'title'       => __( 'Webhook Secret Key', 'zerth-pay-payment-gateway' ),
                 'type'        => 'text',
-                'description' => __( 'Get your Webhook Secret Key from your Zerthpay dashboard.', 'zerthpay-gateway' ),
+                'description' => __( 'Get your Webhook Secret Key from your Zerthpay dashboard.', 'zerth-pay-payment-gateway' ),
                 'default'     => '',
                 'desc_tip'    => true,
             ),
@@ -143,8 +143,8 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 		// For a real gateway, this might be where you render a secure iframe or custom card input fields.
 		?>
 		<p class="form-row form-row-wide">
-			<label for="zerthpay_custom_field"><?php esc_html_e( 'Zerthpay Reference (Optional)', 'zerthpay-gateway' ); ?></label>
-			<input type="text" class="input-text" id="zerthpay_custom_field" name="zerthpay_custom_field" placeholder="<?php esc_attr_e( 'Enter an optional reference', 'zerthpay-gateway' ); ?>" />
+			<label for="zerthpay_custom_field"><?php esc_html_e( 'Zerthpay Reference (Optional)', 'zerth-pay-payment-gateway' ); ?></label>
+			<input type="text" class="input-text" id="zerthpay_custom_field" name="zerthpay_custom_field" placeholder="<?php esc_attr_e( 'Enter an optional reference', 'zerth-pay-payment-gateway' ); ?>" />
 		</p>
 		<?php
 	}
@@ -198,7 +198,7 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 			$payment_url = $zerthpay_response['data']['payment_url'];
 
 			
-			$order->update_status( 'pending', __( 'Awaiting ZerthPay payment.', 'zerthpay-gateway' ) );
+			$order->update_status( 'pending', __( 'Awaiting ZerthPay payment.', 'zerth-pay-payment-gateway' ) );
 			$order->save();
 
 			return array(
@@ -207,7 +207,7 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 			);
 
 		} else {
-			$error_message = __( 'ZerthPay payment initiation failed. Please try again.', 'zerthpay-gateway' );
+			$error_message = __( 'ZerthPay payment initiation failed. Please try again.', 'zerth-pay-payment-gateway' );
 
 			if ( isset( $zerthpay_response['message'] ) ) {
 				if ( is_string( $zerthpay_response['message'] ) && ! empty( $zerthpay_response['message'] ) ) {

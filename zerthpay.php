@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: ZerthPay  Gateway
+ * Plugin Name: ZERTH Pay Payment Gateway
  * Plugin URI:  https://pay.zerth.online
  * Description: A WooCommerce payment gateway for ZERTH Pay.
  * Version:     1.0.0
@@ -8,9 +8,9 @@
  * Author URI:  https://sharpali.com
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: zerthpay-gateway
+ * Text Domain: zerth-pay-payment-gateway
  * Domain Path: /languages
- * WC requires at least: 3.0
+ * WC requires at least: 6.2
  * WC tested up to: 8.9
  */
 
@@ -24,7 +24,7 @@ if ( ! defined( 'ZERTHPAY_VERSION' ) ) {
 }
 
 /**
- * Zerthpay Gateway main class.
+ * ZERTH Pay Payment Gateway main class.
  */
 class Zerthpay_Gateway_Loader {
 
@@ -76,7 +76,7 @@ class Zerthpay_Gateway_Loader {
 	}
 
 	/**
-	 * Add the Zerthpay Gateway to WooCommerce.
+	 * Add the ZERTH Pay Payment Gateway to WooCommerce.
 	 *
 	 * @param array $methods Payment methods.
 	 * @return array
@@ -89,8 +89,11 @@ class Zerthpay_Gateway_Loader {
 	/**
 	 * Load plugin textdomain.
 	 */
+	/**
+	 * This method below must be commented out before plugin can be hosted on WordPress.org
+	 */
 	public function load_zerthpay_textdomain() {
-		load_plugin_textdomain( 'zerthpay-gateway', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'zerth-pay-payment-gateway', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -124,7 +127,7 @@ class Zerthpay_Gateway_Loader {
 			);
 		} else {
             // Optional: Log a message if Blocks classes are not found, indicating blocks integration is skipped.
-            error_log( 'Zerthpay Gateway: WooCommerce Blocks AbstractPaymentMethodType class not found. Blocks integration skipped.' );
+            error_log( 'ZERTH Pay Payment Gateway: WooCommerce Blocks AbstractPaymentMethodType class not found. Blocks integration skipped.' );
         }
 	}
 }

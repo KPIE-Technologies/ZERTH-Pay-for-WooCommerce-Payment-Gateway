@@ -16,7 +16,7 @@ const settings = getSetting("zerthpay_data", {});
 
 // Fallback label if not provided by settings.
 const label =
-  decodeEntities(settings.title) || __("Pay with Zerthpay", "zerthpay-gateway");
+  decodeEntities(settings.title) || __("Pay with Zerthpay", "zerth-pay-payment-gateway");
 
 /**
  * Zerthpay Payment Method Content (displayed on checkout).
@@ -36,13 +36,13 @@ const Content = () => {
     // 	createElement(
     // 		'label',
     // 		{ htmlFor: 'zerthpay-block-custom-field' },
-    // 		__( 'Zerthpay Reference:', 'zerthpay-gateway' )
+    // 		__( 'Zerthpay Reference:', 'zerth-pay-payment-gateway' )
     // 	),
     // 	createElement( 'input', {
     // 		type: 'text',
     // 		id: 'zerthpay-block-custom-field',
     // 		className: 'input-text',
-    // 		placeholder: __( 'Optional reference', 'zerthpay-gateway' ),
+    // 		placeholder: __( 'Optional reference', 'zerth-pay-payment-gateway' ),
     // 		// For updating the payment data, you'd typically use a context consumer
     // 		// from @woocommerce/block-data or similar.
     // 		// onChange: ( e ) => { /* update checkout data */ }
