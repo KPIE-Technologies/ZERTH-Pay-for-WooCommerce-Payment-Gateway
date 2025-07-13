@@ -266,7 +266,7 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
         $token = $this->initialize_zerthpay(initiate_url: $initiate_url);
 
         if ( !isset($token['res']['data']['access_token']) ) {
-            wc_add_notice(__('ZERTH Pay API Error: Could not authenticate with payment gateway.', 'zerthpay-gateway'), 'error');
+            wc_add_notice(__('ZERTH Pay API Error: Could not authenticate with payment gateway.', 'zerth-pay-payment-gateway'), 'error');
             return false;
         }
         $access_token  = $token['res']['data']['access_token'];
@@ -418,18 +418,18 @@ class WC_Gateway_Zerthpay extends WC_Payment_Gateway {
 			case 'Completed': 
 				if (! $order->is_paid()) {
 					$order->payment_complete($zerthpay_transaction_id); 
-					$order->add_order_note(sprintf(__('ZERTH Pay webhook: Payment completed. Transaction ID: %1s', 'zerthpay-gateway'), $zerthpay_transaction_id));
+					$order->add_order_note(sprintf(__('ZERTH Pay webhook: Payment completed. Transaction ID: %1s', 'zerth-pay-payment-gateway'), $zerthpay_transaction_id));
 				}
 				break;
 			case 'Failed': 
-				$order->update_status('failed', sprintf(__('ZERTH Pay webhook: Payment failed. Transaction ID: %1s', 'zerthpay-gateway'), $zerthpay_transaction_id));
+				$order->update_status('failed', sprintf(__('ZERTH Pay webhook: Payment failed. Transaction ID: %1s', 'zerth-pay-payment-gateway'), $zerthpay_transaction_id));
 				break;
 			case 'Refunded': 
-				$order->update_status('refunded', sprintf(__('ZERTH Pay webhook: Payment refunded. Transaction ID: %1s', 'zerthpay-gateway'), $zerthpay_transaction_id));
+				$order->update_status('refunded', sprintf(__('ZERTH Pay webhook: Payment refunded. Transaction ID: %1s', 'zerth-pay-payment-gateway'), $zerthpay_transaction_id));
 				// Additional logic might be required here for partial refunds or stock management.
 				break;
 			default:
-				$order->add_order_note(sprintf(__('ZERTH Pay webhook: Unknown status "%1s" received for transaction ID: %2s', 'zerthpay-gateway'), $zerthpay_status, $zerthpay_transaction_id));
+				$order->add_order_note(sprintf(__('ZERTH Pay webhook: Unknown status "%1s" received for transaction ID: %2s', 'zerth-pay-payment-gateway'), $zerthpay_status, $zerthpay_transaction_id));
 				break;
 		}
 
