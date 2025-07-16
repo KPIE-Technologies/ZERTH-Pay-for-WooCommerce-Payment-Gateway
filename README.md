@@ -7,7 +7,7 @@ Author:      James Idowu (James KPIE)
 Author URI:  https://sharpali.com
 License:     GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Text Domain: zerth-pay-gateway
+Text Domain: zerth-pay-payment-gateway
 Domain Path: /languages
 WC requires at least: 3.0
 WC tested up to: 8.9
