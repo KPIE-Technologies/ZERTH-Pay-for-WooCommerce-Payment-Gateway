@@ -89,9 +89,6 @@ class Zerthpay_Gateway_Loader {
 	/**
 	 * Load plugin textdomain.
 	 */
-	/**
-	 * This method below must be commented out before plugin can be hosted on WordPress.org
-	 */
 	public function load_zerthpay_textdomain() {
 		load_plugin_textdomain( 'zerth-pay-payment-gateway', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
