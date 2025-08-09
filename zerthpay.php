@@ -55,8 +55,8 @@ class Zerthpay_Gateway_Loader {
 		// Declare compatibility with Cart & Checkout Blocks early.
 		add_action( 'before_woocommerce_init', array( $this, 'declare_woocommerce_blocks_compatibility' ) );
 
-		// Load plugin textdomain.
-		add_action( 'plugins_loaded', array( $this, 'load_zerthpay_textdomain' ) );
+		// Load plugin textdomain - use init hook for better timing.
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// Register Zerthpay Blocks Integration for block checkout.
 		// This hook ensures that WooCommerce Blocks are loaded and ready.
@@ -89,9 +89,14 @@ class Zerthpay_Gateway_Loader {
 	/**
 	 * Load plugin textdomain.
 	 */
-	public function load_zerthpay_textdomain() {
+	/*
+	Comment the function below when you want to submit APP for LIVE WP Plugin
+	*/
+	
+	public function load_plugin_textdomain() {
 		load_plugin_textdomain( 'zerth-pay-payment-gateway', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
+	
 
 	/**
 	 * Declare compatibility with WooCommerce Cart & Checkout Blocks.

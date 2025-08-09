@@ -42,7 +42,9 @@ final class Zerthpay_Blocks_Integration extends AbstractPaymentMethodType {
 		if ( ! class_exists( '\WC_Gateway_Zerthpay' ) ) {
             // This scenario should be rare with the improved loading in main plugin file.
             // Log for debugging if it happens.
-            error_log( 'Zerthpay Blocks Integration: WC_Gateway_Zerthpay class not found during initialization.' );
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                error_log( 'Zerthpay Blocks Integration: WC_Gateway_Zerthpay class not found during initialization.' );
+            }
 			return;
 		}
 		$this->settings = get_option( 'woocommerce_zerthpay_settings', array() );
