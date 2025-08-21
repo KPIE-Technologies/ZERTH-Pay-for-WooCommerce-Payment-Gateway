@@ -1,0 +1,12 @@
+0000000000000000000000000000000000000000 2a682b87176604dd453cdb7be253c2ed9ee08071 Idowu James <fxroyalmoneysolution@gmail.com> 1749481432 +0100	commit (initial): Initial commit
+2a682b87176604dd453cdb7be253c2ed9ee08071 fb1b646ebb3a54bdbd4c41da55c131a1b7129734 Idowu James <fxroyalmoneysolution@gmail.com> 1749481481 +0100	commit: initial WP plugin creation
+fb1b646ebb3a54bdbd4c41da55c131a1b7129734 992186ad88a7827ae214abc63d7da4d3264a1973 Idowu James <fxroyalmoneysolution@gmail.com> 1749481486 +0100	commit: Create .DS_Store
+992186ad88a7827ae214abc63d7da4d3264a1973 87fc9b6d5b46ed4810cd00f216537469ef494498 Idowu James <fxroyalmoneysolution@gmail.com> 1749482348 +0100	commit: Added ReadMe.Md
+87fc9b6d5b46ed4810cd00f216537469ef494498 b66dc7490abcf07eb18e5397195fad01e1538f39 Idowu James <fxroyalmoneysolution@gmail.com> 1749815888 +0100	pull --ff --recurse-submodules --progress origin: Fast-forward
+b66dc7490abcf07eb18e5397195fad01e1538f39 a10002c86b17f475b3d6904066ef23b46af8e64f Idowu James <fxroyalmoneysolution@gmail.com> 1749816135 +0100	commit: makes some update
+a10002c86b17f475b3d6904066ef23b46af8e64f 7c7ecb40eaa9513d25ffd31a9e16ef29bb701ec2 Idowu James <fxroyalmoneysolution@gmail.com> 1749904047 +0100	commit: Adjust to meet WordPress standard
+7c7ecb40eaa9513d25ffd31a9e16ef29bb701ec2 a152201b684fc020bb21a7424b307f590b572e9b Idowu James <fxroyalmoneysolution@gmail.com> 1752649173 +0100	pull --ff --recurse-submodules --progress origin: Fast-forward
+a152201b684fc020bb21a7424b307f590b572e9b 1411a0e029aa30ee72f0003392c21e78f46001b9 Idowu James <fxroyalmoneysolution@gmail.com> 1752649175 +0100	checkout: moving from main to working
+1411a0e029aa30ee72f0003392c21e78f46001b9 f3491a704bf10dc504be7e969f3c0ca771c819a6 Idowu James <fxroyalmoneysolution@gmail.com> 1752668777 +0100	commit: updated
+f3491a704bf10dc504be7e969f3c0ca771c819a6 b2800fb3fab0107dbc905d90b36291a3b7a31ddf Idowu James <fxroyalmoneysolution@gmail.com> 1754671148 +0100	commit: pushed another modification
+b2800fb3fab0107dbc905d90b36291a3b7a31ddf 38e9ecb46e377e55053dcc91ba5ac4fe057fa26e Idowu James <fxroyalmoneysolution@gmail.com> 1754765953 +0100	commit: pushed new fixes based on WP LIVE review
